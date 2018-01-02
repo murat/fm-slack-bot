@@ -6,30 +6,29 @@ module Commands
     command 'register' do |client, data, _match|
       client.typing channel: data.channel
       
-      url  = URI("#{ENV['FM_BASE_URL']}/oauth/token")
+      return client.say channel: data.channel, text: ":unamused: Token vermedin ama." if _match['expression'].blank?
+
+      exp                      = _match['expression'].rpartition(' ')
+      token                    = exp.last
+      
+      url  = URI("#{ENV['FM_BASE_URL']}/api/v1/ping")
       http = Net::HTTP.new(url.host, url.port)
 
-      request                  = Net::HTTP::Post.new(url)
+      request                  = Net::HTTP::Get.new(url)
       request['Content-Type']  = 'application/json'
-
+      request['Authorization'] = "Bearer #{exp.last}"
       request.body = {
-        client_id: ENV['FM_CLIENT_ID'],
-        grant_type: 'password',
-        username: client.users[data.user].profile.email,
-        password: _match['expression'],
-        scope: ''
+        email: client.users[data.user].profile.email
       }.to_json
 
       response = http.request(request)
 
       if response.code.to_i == 200
-        response = JSON.parse(response.read_body)
-
-        User.create(slack_id: data.user, email: client.users[data.user].profile.email, token: response['access_token'])
-
-        client.say channel: data.channel, text: "Welcome to the jungle.", gif: "welcome"
+        User.create(slack_id: data.user, email: client.users[data.user].profile.email, token: exp.last)
+        client.say channel: data.channel, text: ":tada: Hoşgeldin!.."
       else
-        client.say channel: data.channel, text: "Opps!!! napıyorsun sen hacı ya :unamused: Bi daha yapma lütfen.", gif: "angry"
+        client.say channel: data.channel,
+          text: ":unamused: Lütfen doğru düzgün bir token ver. Ha, bir de slack ve fazlamesai.net email'in aynı olmak zorunda maalesef."
       end
     end
   end
