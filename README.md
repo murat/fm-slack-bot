@@ -13,4 +13,11 @@ bundle install
 foreman start # ve ya web: bundle exec puma -p 5000
 ```
 
+Belki pumayı bir arkaplan işlemi olarak çalıştırmak isteyen olur:
+
+```
+mkdir -p pid
+bundle exec puma -e production -p 5000 --pidfile tmp/pids/puma.pid -d
+```
+
 Hepsi bu...
