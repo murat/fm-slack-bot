@@ -19,6 +19,7 @@ module Commands
 
       url  = URI("#{ENV['FM_BASE_URL']}/api/v1/links")
       http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == 'https'
 
       request                  = Net::HTTP::Post.new(url)
       request['Content-Type']  = 'application/json'
