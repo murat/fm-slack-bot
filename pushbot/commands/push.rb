@@ -7,23 +7,24 @@ module Commands
       client.typing channel: data.channel
       return client.say channel: data.channel, text: ":unamused: Argüman vermedin ama." if _match['expression'].blank?
 
-      exp                      = _match['expression'].rpartition(' ')
-      title                    = exp.first
-      url                      = exp.last[1..-2]
-      
-      return client.say channel: data.channel, text: ":unamused: Düzgün bir link girer misin?" unless url =~ URI::regexp
-
       user = User.where(email: client.users[data.user].profile.email)
 
       return client.say channel: data.channel, text: ":unamused: Önce bir register lütfen." unless user.exists?
 
       url  = URI("#{ENV['FM_BASE_URL']}/api/v1/links")
       http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true if url.scheme == 'https'
+      http.use_ssl = url.scheme == 'https'
 
       request                  = Net::HTTP::Post.new(url)
       request['Content-Type']  = 'application/json'
       request['Authorization'] = "Bearer #{user.first.token}"
+
+      exp                      = _match['expression'].rpartition(' ')
+      title                    = exp.first
+      url                      = exp.last[1..-2]
+      
+      return client.say channel: data.channel, text: ":unamused: Düzgün bir link girer misin?" unless url =~ URI::regexp
+      
       request.body = {
         link: {
           title: title,

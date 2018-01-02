@@ -13,7 +13,7 @@ module Commands
       
       url  = URI("#{ENV['FM_BASE_URL']}/api/v1/ping")
       http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true if url.scheme == 'https'
+      http.use_ssl = url.scheme == 'https'
 
       request                  = Net::HTTP::Get.new(url)
       request['Content-Type']  = 'application/json'
