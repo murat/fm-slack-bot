@@ -5,7 +5,7 @@ module Commands
     command 'ping' do |client, data, _match|
       client.typing channel: data.channel
       
-      client.say channel: data.channel, text: "pong <@#{data.user}>", gif: "pong"
+      client.say channel: data.channel, text: "pong <@#{data.user}>"
     end
   end
 end

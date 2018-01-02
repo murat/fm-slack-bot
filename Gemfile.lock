@@ -125,7 +125,7 @@ DEPENDENCIES
   foreman
   mongoid (~> 6.1.0)
   pry
-  puma
+  puma (~> 3.0)
   rack-test
   rake
   rspec
