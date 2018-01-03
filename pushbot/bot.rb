@@ -1,6 +1,5 @@
 module Pushbot
   class Bot < SlackRubyBot::Bot
-
     help do
       title 'FM PushBot'
       desc 'FM\'e slackten post atmaya yarar.'
@@ -20,13 +19,12 @@ module Pushbot
         long_desc "Öncelikle şunu belirtelim şuan için sadece Link tipi post atılabilir.\n" \
           "Ve herhangi bir kanalda `@pushbot push Link başlığı http://link.com` şeklinde paylaşımınızı yapın.\n" \
           "NOT: Bu komut kanaldaki diğer slack kullanıcıları tarafından da görülecektir.\n" \
-          "NOT: Paylaşım önce FM admininin onayından geçecektir."
+          'NOT: Paylaşım önce FM admininin onayından geçecektir.'
       end
 
       command 'logout' do
         desc 'Bot ile FM hesabının bağlantısını keser.'
       end
     end
-
   end
 end

@@ -7,7 +7,7 @@ require 'web'
 
 Dotenv.load
 
-Mongoid.load!("mongoid.yml")
+Mongoid.load!('mongoid.yml')
 
 Thread.abort_on_exception = true
 

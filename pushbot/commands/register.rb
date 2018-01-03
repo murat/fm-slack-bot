@@ -5,12 +5,12 @@ module Commands
   class Register < SlackRubyBot::Commands::Base
     command 'register' do |client, data, _match|
       client.typing channel: data.channel
-      
-      return client.say channel: data.channel, text: ":unamused: Token vermedin ama." if _match['expression'].blank?
+
+      return client.say channel: data.channel, text: ':unamused: Token vermedin ama.' if _match['expression'].blank?
 
       exp                      = _match['expression'].rpartition(' ')
       token                    = exp.last
-      
+
       url  = URI("#{ENV['FM_BASE_URL']}/api/v1/ping")
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = url.scheme == 'https'
@@ -25,11 +25,13 @@ module Commands
       response = http.request(request)
 
       if response.code.to_i == 200
-        User.create(slack_id: data.user, email: client.users[data.user].profile.email, token: exp.last)
-        client.say channel: data.channel, text: ":tada: Hoşgeldin!.."
+        record = User.find_or_initialize_by(slack_id: data.user, email: client.users[data.user].profile.email)
+        record.token = exp.last
+        record.save
+        client.say channel: data.channel, text: ":tada: Hoşgeldin <@#{data.user}>!.."
       else
         client.say channel: data.channel,
-          text: ":unamused: Lütfen doğru düzgün bir token ver. Ha, bir de slack ve fazlamesai.net email'in aynı olmak zorunda maalesef."
+                   text: ":unamused: Lütfen doğru düzgün bir token ver. Ha, bir de slack ve fazlamesai.net email'in aynı olmak zorunda maalesef."
       end
     end
   end

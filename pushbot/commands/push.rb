@@ -5,11 +5,11 @@ module Commands
   class Push < SlackRubyBot::Commands::Base
     command 'push' do |client, data, _match|
       client.typing channel: data.channel
-      return client.say channel: data.channel, text: ":unamused: Argüman vermedin ama." if _match['expression'].blank?
+      return client.say channel: data.channel, text: ':unamused: Argüman vermedin ama.' if _match['expression'].blank?
 
       user = User.where(email: client.users[data.user].profile.email)
 
-      return client.say channel: data.channel, text: ":unamused: Önce bir register lütfen." unless user.exists?
+      return client.say channel: data.channel, text: ':unamused: Önce bir register lütfen.' unless user.exists?
 
       url  = URI("#{ENV['FM_BASE_URL']}/api/v1/links")
       http = Net::HTTP.new(url.host, url.port)
@@ -22,9 +22,9 @@ module Commands
       exp                      = _match['expression'].rpartition(' ')
       title                    = exp.first
       url                      = exp.last[1..-2]
-      
-      return client.say channel: data.channel, text: ":unamused: Düzgün bir link girer misin?" unless url =~ URI::regexp
-      
+
+      return client.say channel: data.channel, text: ':unamused: Düzgün bir link girer misin?' unless url =~ URI::DEFAULT_PARSER.make_regexp
+
       request.body = {
         link: {
           title: title,
@@ -38,9 +38,9 @@ module Commands
         response = JSON.parse(response.read_body)
         client.say channel: data.channel, text: ":tada: #{response['message']} -> #{response['url']}"
       elsif response.code.to_i == 401
-        client.say channel: data.channel, text: ":unamused: Önce bir register yap lütfen (özele gel)."
+        client.say channel: data.channel, text: ':unamused: Önce bir register yap lütfen (özele gel).'
       else
-        client.say channel: data.channel, text: ":unamused: Biraz bekle lütfen."
+        client.say channel: data.channel, text: ':unamused: Biraz bekle lütfen.'
       end
     end
   end

@@ -8,8 +8,8 @@ module Commands
 
       user = User.where(email: client.users[data.user].profile.email)
       user.delete
-      
-      client.say channel: data.channel, text: ":hand: Allaha emanet!"
+
+      client.say channel: data.channel, text: ':hand: Allaha emanet!'
     end
   end
 end
