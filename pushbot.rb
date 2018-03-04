@@ -6,6 +6,8 @@ Dir['./pushbot/commands/*.rb'].each { |f| require f }
 
 require 'pushbot/bot'
 
+Mongoid.raise_not_found_error = false
+
 SlackRubyBot.configure do |config|
-  config.send_gifs = true
+  config.send_gifs = false
 end

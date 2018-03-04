@@ -6,7 +6,7 @@ module Commands
     command 'logout' do |client, data, _match|
       client.typing channel: data.channel
 
-      user = User.where(email: client.users[data.user].profile.email)
+      user = User.find_by(email: client.users[data.user].profile.email)
       user.delete
 
       client.say channel: data.channel, text: ':hand: Allaha emanet!'
