@@ -1,8 +1,11 @@
+require 'uri'
+require 'net/http'
+
 module Commands
   class Ping < SlackRubyBot::Commands::Base
     command 'ping' do |client, data, _match|
-      client.typing channel: data.channel
       is_logged = false
+      client.typing channel: data.channel
       user = User.where(email: client.users[data.user].profile.email)
 
       if user.exists?
@@ -22,7 +25,7 @@ module Commands
         end
       end
 
-      msg = is_logged ? "<#{user.first.email}> olarak register olmussun." : "Register olmamışsın."
+      msg = user.exists? && is_logged ? "<#{user.first.email}> olarak register olmussun." : "Register olmamışsın."
 
       client.say channel: data.channel, text: "pong <@#{data.user}>! __(#{msg})__"
     end
