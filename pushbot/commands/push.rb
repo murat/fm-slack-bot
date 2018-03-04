@@ -20,7 +20,8 @@ module Commands
       request['Authorization'] = "Bearer #{user.token}"
 
       exp                      = _match['expression'].rpartition(' ')
-      title                    = exp.first
+      title                    = exp.first.gsub(/\#(\w+)/, '').strip
+      tags                     = exp.first.scan(/#\w+/).flatten
       url                      = exp.last[1..-2]
 
       return client.say channel: data.channel, text: ':unamused: Düzgün bir link girer misin?' unless url =~ URI::DEFAULT_PARSER.make_regexp
@@ -28,7 +29,8 @@ module Commands
       request.body = {
         link: {
           title: title,
-          url: url
+          url: url,
+          tag_list: tags
         }
       }.to_json
 
