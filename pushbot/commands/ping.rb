@@ -8,7 +8,7 @@ module Commands
       client.typing channel: data.channel
       user = User.where(email: client.users[data.user].profile.email)
 
-      if user.exists?
+      if user.exists? && !user.token.nil?
         token = user.token
 
         url  = URI("#{ENV['FM_BASE_URL']}/api/v1/ping")
