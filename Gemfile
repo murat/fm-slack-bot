@@ -4,7 +4,7 @@ gem 'celluloid-io'
 gem 'dotenv'
 gem 'mongoid', '~> 6.1.0'
 gem 'puma', '~> 3.12'
-gem 'sinatra', '~> 2.0.1'
+gem 'sinatra', '~> 2.2.0'
 gem 'slack-ruby-bot'
 
 group :development, :test do
